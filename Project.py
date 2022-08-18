@@ -1,0 +1,261 @@
+import mysql.connector
+import tkinter
+from tkinter import *
+import tkinter as tk
+from datetime import datetime
+
+mydb = mysql.connector.Connect(host= "localhost", user="root",password="reaper767", auth_plugin='mysql_native_password')
+cursor= mydb.cursor()
+cursor.execute("use project")
+window = Tk()
+window.title("Courier Service")
+
+class DATA:
+    def __init__(self,window,mydb,cursor):
+        self.f=Frame(window,height=500,width=800,bg="Blue")
+        self.f.pack()
+        self.l1 = Label(self.f,text="Welcome to Courier Service",font=("Times New Roman",20,"bold"))
+        self.l1.pack()
+        self.b1 = Button(self.f,text="Track Your Order",font=("Times New Roman",12,"bold"),width=14,height=2,bg="cyan",fg='navy', command= lambda:self.Track_Your_Order(window))
+        self.b1.pack()
+        self.b2 = Button(self.f,text="New Order",font=("Times New Roman",12,"bold"),width=14,height=2,bg="cyan",fg='navy', command = lambda:self.InsertValue(window))
+        self.b1.pack()
+        self.b3 = Button(self.f,text="Order Details",font=("Times New Roman",12,"bold"),width=14,height=2,bg="cyan",fg='navy')
+        self.b1.pack()
+        self.l1.place(x=90,y=50)
+        self.b1.place(x=90,y=200)
+        self.b2.place(x=90,y=300)
+        self.b3.place(x=90,y=400)
+
+    def ins_c(self,insert):
+        c2 = self.ice2.get()
+        c3 = self.ice3.get()
+        c4 = self.ice4.get()
+        c5 = self.ice5.get()
+        c6 = self.ice6.get()
+        c7 = self.ice7.get()
+        try:
+            cursor.execute(f"Insert into customer values ({c2}, \"{c3}\", \"{c4}\", \"{c5}\", {c6}, \"{c7}\")")
+            mydb.commit()
+            self.zc=Label(self.but,text="New Customer Values inserted Successfully",font= ("Times New Roman",16,"bold"), bg="maroon", fg = "light cyan")
+            self.zc.pack()
+            self.zc.place(x=220,y=30)
+        except:
+            mydb.rollback()
+
+    
+
+
+    def InsertValue(self,window = None,num=None):
+        self.insert = Toplevel()
+        self.insert.title("New Order")
+        self.m_frame = Frame(self.insert, height=1500, width=700, bg="maroon")
+        self.m_frame.pack()
+        
+        
+        ## new order -- customer details
+        tvce2=StringVar()
+        tvce3=StringVar()
+        tvce4=StringVar()
+        tvce5=StringVar()
+        tvce6=StringVar()
+        tvce7=StringVar()
+        self.icf1 = Frame(self.m_frame, height=450, width=700, bg="maroon")
+        self.icf1.grid(column=0,row=0)
+        self.icl1 = Label(self.icf1, text = "Insert Customer Details",font= ("Times New Roman",16,"bold"), bg="maroon", fg = "light cyan")
+        self.icl1.pack()
+        self.icl1.place(x = 220 , y = 30)
+        self.icl2 = Label(self.icf1, text = "Enter CID:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.icl2.pack()
+        self.ice2 = Entry(self.icf1,textvariable=tvce2, width = 20)
+        self.ice2.pack()
+        self.icl3 = Label(self.icf1, text = "Enter Name:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.icl3.pack()
+        self.ice3 = Entry(self.icf1,textvariable=tvce3, width = 20)
+        self.ice3.pack()
+        self.icl4 = Label(self.icf1, text = "Enter Mobicle No. :",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.icl4.pack()
+        self.ice4 = Entry(self.icf1,textvariable=tvce4, width = 20)
+        self.ice4.pack()
+        self.icl5 = Label(self.icf1, text = "Enter Address:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.icl5.pack()
+        self.ice5 = Entry(self.icf1,textvariable=tvce5, width = 20)
+        self.ice5.pack()
+        self.icl6 = Label(self.icf1, text = "Enter Pincode:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.icl6.pack()
+        self.ice6 = Entry(self.icf1,textvariable=tvce6, width = 20)
+        self.ice6.pack()
+        self.icl7 = Label(self.icf1, text = "Enter Date(YYYY-MM-DD):",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.icl7.pack()
+        self.ice7 = Entry(self.icf1,textvariable=tvce7, width = 20)
+        self.ice7.pack()
+        self.icb1 = Button(self.icf1,text = "Insert",width = 10,height=2,bg="palegreen4",fg='medium spring green',command = lambda:self.ins_c(window))
+        self.icb1.pack()
+        
+        self.icl2.place(x = 90 , y = 100)
+        self.icl3.place(x = 90 , y = 140)
+        self.icl4.place(x = 90 , y = 180)
+        self.icl5.place(x = 90 , y = 220)
+        self.icl6.place(x = 90 , y = 260)
+        self.icl7.place(x = 90 , y = 300)
+
+        self.ice2.place(x = 400 , y = 100)
+        self.ice3.place(x = 400 , y = 140)
+        self.ice4.place(x = 400 , y = 180)
+        self.ice5.place(x = 400 , y = 220)
+        self.ice6.place(x = 400 , y = 260)
+        self.ice7.place(x = 400 , y = 300)
+        self.icb1.place(x = 400 , y = 350)
+
+        ## new order -- Receiver details
+        self.idf1 = Frame(self.m_frame, height=450, width=700, bg="maroon")
+        self.idf1.grid(column=1,row=0)
+        self.idl1 = Label(self.idf1, text = "Insert Receiver Details",font= ("Times New Roman",16,"bold"), bg="maroon", fg = "light cyan")
+        self.idl1.pack()
+        self.idl1.place(x = 220 , y = 30)
+        self.idl2 = Label(self.idf1, text = "Enter CID:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.idl2.pack()
+        self.ide2 = Entry(self.idf1, width = 20)
+        self.ide2.pack()
+        self.idl3 = Label(self.idf1, text = "Enter Name:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.idl3.pack()
+        self.ide3 = Entry(self.idf1, width = 20)
+        self.ide3.pack()
+        self.idl4 = Label(self.idf1, text = "Enter Mobicle No. :",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.idl4.pack()
+        self.ide4 = Entry(self.idf1, width = 20)
+        self.ide4.pack()
+        self.idl5 = Label(self.idf1, text = "Enter Address:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.idl5.pack()
+        self.ide5 = Entry(self.idf1, width = 20)
+        self.ide5.pack()
+        self.idl6 = Label(self.idf1, text = "Enter Pincode:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.idl6.pack()
+        self.ide6 = Entry(self.idf1, width = 20)
+        self.ide6.pack()
+        self.idl7 = Label(self.idf1, text = "Enter Due Date(YYYY-MM-DD):",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.idl7.pack()
+        self.ide7 = Entry(self.idf1, width = 20)
+        self.ide7.pack()
+        self.idb1 = Button(self.idf1,text = "Insert",width = 10,height=2,bg="palegreen4",fg='medium spring green',command = lambda:self.ins_c(window))
+        self.idb1.pack()
+        
+        self.idl2.place(x = 90 , y = 100)
+        self.idl3.place(x = 90 , y = 140)
+        self.idl4.place(x = 90 , y = 180)
+        self.idl5.place(x = 90 , y = 220)
+        self.idl6.place(x = 90 , y = 260)
+        self.idl7.place(x = 90 , y = 300)
+
+        self.ide2.place(x = 400 , y = 100)
+        self.ide3.place(x = 400 , y = 140)
+        self.ide4.place(x = 400 , y = 180)
+        self.ide5.place(x = 400 , y = 220)
+        self.ide6.place(x = 400 , y = 260)
+        self.ide7.place(x = 400 , y = 300)
+        self.idb1.place(x = 400 , y = 350)
+
+        ##New customer-- Package Details
+        self.ipf1 = Frame(self.m_frame, height=450, width=700, bg="maroon")
+        self.ipf1.grid(column=0,row=1)
+        self.ipl1 = Label(self.ipf1, text = "Insert Package Details",font= ("Times New Roman",16,"bold"), bg="maroon", fg = "light cyan")
+        self.ipl1.pack()
+        self.ipl1.place(x = 220 , y = 30)
+        self.ipl2 = Label(self.ipf1, text = "Enter Package ID:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.ipl2.pack()
+        self.ipe2 = Entry(self.ipf1, width = 20)
+        self.ipe2.pack()
+        self.ipl3 = Label(self.ipf1, text = "Enter CID:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.ipl3.pack()
+        self.ipe3 = Entry(self.ipf1, width = 20)
+        self.ipe3.pack()
+        self.ipl4 = Label(self.ipf1, text = "Enter Weight Class:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.ipl4.pack()
+        self.ipe4 = Entry(self.ipf1, width = 20)
+        self.ipe4.pack()
+        self.ipl5 = Label(self.ipf1, text = "Enter Product Type:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.ipl5.pack()
+        self.ipe5 = Entry(self.ipf1, width = 20)
+        self.ipe5.pack()
+        self.ipb1 = Button(self.ipf1,text = "Insert",width = 10,height=2,bg="palegreen4",fg='medium spring green',command = lambda:self.buttonClick(window))
+        self.ipb1.pack()
+
+        self.ipl2.place(x = 90 , y = 100)
+        self.ipl3.place(x = 90 , y = 140)
+        self.ipl4.place(x = 90 , y = 180)
+        self.ipl5.place(x = 90 , y = 220)
+
+        self.ipe2.place(x = 400 , y = 100)
+        self.ipe3.place(x = 400 , y = 140)
+        self.ipe4.place(x = 400 , y = 180)
+        self.ipe5.place(x = 400 , y = 220)
+        self.ipb1.place(x = 400 , y = 270)
+
+        ##button confirm
+        self.but= Frame(self.m_frame, height=450, width=700, bg="maroon")
+        self.but.grid(column=1,row=1)
+
+
+    def tra_run(self,track):
+        cid=self.te2.get()
+        pid=self.te3.get()
+        cursor.execute(f"Select order_Picked,On_way,Order_Delivered from Tracking where CID={cid} and Package_id=\"{pid}\"")
+        r=cursor.fetchall()[0]
+
+        self.tl7=Label(self.track,text=r[0].strftime("%Y-%m-%d %H:%M:%S"),font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl7.pack()
+        self.tl8=Label(self.track,text=r[1].strftime("%Y-%m-%d %H:%M:%S"),font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl8.pack()
+        self.tl9=Label(self.track,text=r[2].strftime("%Y-%m-%d %H:%M:%S"),font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl9.pack()
+        self.tl7.place(x=300, y=300)
+        self.tl8.place(x=300, y=350)
+        self.tl9.place(x=300, y=400)
+
+    def Track_Your_Order(self,window=None):
+        tv1=StringVar()
+        tv2=StringVar()
+        self.track=Toplevel(window)
+        self.track.title("Tracking")
+
+        
+
+        self.t= Frame(self.track, height=600, width=600, bg="maroon", cursor='cross')
+        self.t.pack()
+        self.tl1 = Label(self.t, text = "Track Your Order Here",font= ("Times New Roman",16,"bold"), bg="maroon", fg = "light cyan")
+        self.tl1.pack()
+        self.tl1.place(x = 130 , y = 50)
+        self.tl2 = Label(self.t, text = "Enter CID:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl2.pack()
+        self.tl3 = Label(self.t, text = "Enter Package Id:",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl3.pack()
+        self.te2 = Entry(self.t,textvariable=tv1, width = 20)
+        self.te2.pack()
+        self.te3 = Entry(self.t,textvariable=tv2 ,width = 20)
+        self.te3.pack()
+        self.tb1 = Button(self.t,text = "Track",width = 10,height=2,bg="palegreen4",fg='medium spring green',command = lambda:self.tra_run(window))
+        self.tb1.pack()
+        self.tl4=Label(self.t,text="Order picked: ",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl4.pack()
+        self.tl5=Label(self.t,text="On Way: ",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl5.pack()
+        self.tl6=Label(self.t,text="Order Delivered: ",font= ("Times New Roman",12,"bold"), bg="maroon", fg = "light cyan")
+        self.tl6.pack()
+
+        self.tl2.place(x = 110 , y = 100)
+        self.tl3.place(x = 110 , y = 150)
+        self.te2.place(x = 300 , y = 100)
+        self.te3.place(x = 300 , y = 150)
+        self.tb1.place(x = 200 , y = 250)
+        self.tl4.place(x = 110 , y = 300)
+        self.tl5.place(x = 110 , y = 350)
+        self.tl6.place(x = 110 , y = 400)
+
+    
+    
+
+
+
+
+d=DATA(window,mydb,cursor)
+window.mainloop()
